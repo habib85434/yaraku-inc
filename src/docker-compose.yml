@@ -1,0 +1,26 @@
+version: "3.9"
+services:
+  admin:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+    - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - admin_db
+
+
+  admin_db:
+    image: "mysql:5.7.22"
+    volumes:
+      - ./storage/dbdata:/var/lib/mysql
+    ports:
+      - "33063:3306"
+    environment:
+      MYSQL_DATABASE: admin
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+
