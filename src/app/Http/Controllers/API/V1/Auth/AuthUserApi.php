@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Log;
 
 class AuthUserApi extends Controller
 {
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getUserByToken(Request $request)
     {
          try {

@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Log;
 
 class Delete extends BaseActions
 {
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function destroy($id)
     {
         try {

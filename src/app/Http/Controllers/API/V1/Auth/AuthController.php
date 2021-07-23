@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function login(Request $request)
     {
         try {
@@ -46,6 +50,10 @@ class AuthController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
     public function validation(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -56,6 +64,9 @@ class AuthController extends Controller
         return $validator;
     }
 
+    /**
+     * @param $id
+     */
     public function tokenProcess($id)
     {
         $iData['user_id'] = $id;
@@ -69,6 +80,10 @@ class AuthController extends Controller
             'validity' => $iData['validity']]);
     }
 
+    /**
+     * @param $id
+     * @return array|\Illuminate\Http\JsonResponse
+     */
     public function tokenUser($id)
     {
         try {
@@ -89,6 +104,10 @@ class AuthController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function logout(Request $request)
     {
         try {

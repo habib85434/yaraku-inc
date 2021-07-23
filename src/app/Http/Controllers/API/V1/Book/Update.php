@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\Log;
 
 class Update extends BaseActions
 {
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function changeAuthor(Request $request, $id)
     {
         try {
