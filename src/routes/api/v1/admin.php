@@ -8,6 +8,6 @@ Route::group(['prefix' => 'book'], function (){
         ->name('book_update');
     Route::delete('/delete/{id}', 'App\Http\Controllers\Api\V1\Book\Delete@destroy')
         ->name('book_delete');
-
+    Route::post('/search', 'App\Http\Controllers\Api\V1\Book\Search@searchBook')->name('book_search');
 });
 

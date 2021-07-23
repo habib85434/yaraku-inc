@@ -22,6 +22,7 @@ class BookRepository extends BaseRepository implements BookRepositoryInterface
 
     /**
      * @param int $record
+     * @param string|null $sortKey
      * @return mixed
      */
     public function list(int $record, string $sortKey = null)
@@ -30,7 +31,7 @@ class BookRepository extends BaseRepository implements BookRepositoryInterface
             $this->record = $record;
             $books = $this->model->query();
 
-            empty($sortKey)
+            empty(!$sortKey)
                 ? $books = $this->bookSorting($books, $sortKey)
                 : $books->orderBy('created_at', 'desc');
 
@@ -88,19 +89,32 @@ class BookRepository extends BaseRepository implements BookRepositoryInterface
         }
     }
 
-    public function deleteFromList(int $id)
+    public function searchByTitleOrAuthor(array $data, int $record, string $sortKey)
     {
-        // TODO: Implement deleteFromList() method.
-    }
+        try {
+            $this->record = $record;
+            $books = $this->model->query();
 
-    public function sortByAuthorsOrNames(string $sortKey)
-    {
-        // TODO: Implement sortByAuthorsOrNames() method.
-    }
+            if (!empty($data['title'])) {
+                $books->where('title', '=', $data['title']);
+            }
+            if (!empty($data['author'])) {
+                $books->where('author', '=', $data['author']);
+            }
 
-    public function searchByTitleOrAuthor(string $searchType, string $searchKey)
-    {
-        // TODO: Implement searchByTitleOrAuthor() method.
+            empty(!$sortKey)
+                ? $books = $this->bookSorting($books, $sortKey)
+                : $books->orderBy('created_at', 'desc');
+
+            $record != 0
+                ? $books = $books->paginate($this->record)
+                : $books = $books->get();
+
+            return $books;
+        } catch ( \Throwable $throwable ) {
+            Log::error($throwable->getMessage().'. Location : '.$throwable->getFile() .' at line : '
+                .$throwable->getLine());
+        }
     }
 
     public function exportCSVorXML(string $exportType, string $exportKey)
