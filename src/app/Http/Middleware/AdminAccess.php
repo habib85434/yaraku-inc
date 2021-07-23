@@ -18,8 +18,7 @@ class AdminAccess
      */
     public function handle(Request $request, Closure $next)
     {
-        $token = $request->header('api_key');
-
+        $token = $request->header('token');
 
         if (empty($token)) {return responseUnauthorized();}
 
@@ -29,7 +28,6 @@ class AdminAccess
 
         $user = User::where('id', '=', $key->user_id)->first();
 
-
         if (empty($user) || $user->user_type != 'ADMIN') {
             return responseUnauthorized();
         }
@@ -37,3 +35,4 @@ class AdminAccess
         return $next($request);
     }
 }
+

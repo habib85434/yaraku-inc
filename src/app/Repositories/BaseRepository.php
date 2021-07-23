@@ -3,23 +3,19 @@
 
 namespace App\Repositories;
 
-
-
 use App\Models\AccessToken;
-use App\Models\AppAction;
 use App\Models\AppLog;
-use App\Models\Breeder;
-use App\Models\Customer;
 use App\Repositories\Interfaces\BaseRepositoryInterface;
-use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 class BaseRepository implements BaseRepositoryInterface
 {
-    public $paginationNumber = 10;
-    public $tax = 10;
+    /**
+     * @var int
+     */
+    public $record = 15;
 
     /**
      * @var Model
@@ -57,9 +53,9 @@ class BaseRepository implements BaseRepositoryInterface
     function find($id)
     {
         $result = $this->model->find($id);
-        if (empty($result)) {
-            throw new NotFoundResourceException("No result found!");
-        }
+//        if (empty($result)) {
+//            throw new NotFoundResourceException("No result found!");
+//        }
         return $result;
     }
 
@@ -148,15 +144,6 @@ class BaseRepository implements BaseRepositoryInterface
         }
     }
 
-    function actionLog(array $data)
-    {
-        try {
-            AppAction::create($data);
-        } catch ( \Throwable $throwable ) {
-            Log::error('app_log data could not insert.');
-        }
-    }
-
     function accessToken(array $data, int $userId)
     {
         try {
@@ -180,73 +167,6 @@ class BaseRepository implements BaseRepositoryInterface
             User::where('id', '=',  $id )->update(['active' => 1]);
         } catch ( \Throwable $throwable ) {
             Log::error('user data could not updated.');
-        }
-    }
-
-    public function breederById( int $id )
-    {
-        try {
-            return Breeder::where('user_id', '=', $id)
-                ->with([
-                    'company' => function ( $p ) {
-                        $p->with('prefecture');
-                        $p->with('city');
-                    },
-                    'credential'
-                ])
-                ->first();
-        } catch (\Throwable $throwable) {
-            throw new \Exception($throwable->getMessage());
-        }
-    }
-
-    public function breeder( int $id )
-    {
-        try {
-            return Breeder::where('id', '=', $id)
-                ->with([
-                    'company' => function ( $p ) {
-                        $p->with('prefecture');
-                        $p->with('city');
-                    },
-                    'credential'
-                ])
-                ->first();
-        } catch (\Throwable $throwable) {
-            throw new \Exception($throwable->getMessage());
-        }
-    }
-
-
-
-    function customerById(int $userId)
-    {
-        try {
-            return Customer::where('user_id', '=', $userId)
-//                ->with([
-//                    'company' => function ( $p ) {
-//                        $p->with('prefecture');
-//                        $p->with('city');
-//                    },
-//                    'credential'
-//                ])
-                ->first();
-        } catch (\Throwable $throwable) {
-            throw new \Exception($throwable->getMessage());
-        }
-    }
-
-    public function findCustomer(int $id)
-    {
-        try {
-            return Customer::with([
-                    'prefecture',
-                    'city',
-                    'credential',
-                ])
-                ->where('id','=', $id)->first();
-        } catch ( \Throwable $throwable ) {
-            throw new \Exception($throwable->getMessage());
         }
     }
 }

@@ -21,22 +21,22 @@ class AuthController extends Controller
                 return validationWithDetailsError($validation->errors());
             }
 
-            $pData = $request->all();
-            $eData = User::where('email', '=', $pData['email'])->first();
-            if (empty($eData)) {
+            $postData = $request->all();
+            $existUser = User::where('email', '=', $postData['email'])->first();
+            if (empty($existUser)) {
                 return noContent('The user not found');
             }
 
-            $pssMatch = Hash::check( $pData['password'], $eData->password);
+            $pssMatch = Hash::check( $postData['password'], $existUser->password);
 
             if ($pssMatch) {
-                $eData->update(['active' => 1]);
-                $this->tokenProcess($eData->id);
+                $existUser->update(['active' => 1]);
+                $this->tokenProcess($existUser->id);
             } else {
                 return authFail();
             }
 
-            $response = $this->tokenUser($eData->id);
+            $response = $this->tokenUser($existUser->id);
 
             return authSuccess($response);
 
@@ -59,13 +59,14 @@ class AuthController extends Controller
     public function tokenProcess($id)
     {
         $iData['user_id'] = $id;
-        $iData['validity'] = $id;
         $iData['token'] = generateToken($id);
-        $iData['validity'] = date('Y-m-d', strtotime('+1 day'));
+        $iData['validity'] = date('Y-m-d H:i:s', strtotime('+1 day'));
 
         $exData = AccessToken::where('user_id', '=', $id)->first();
 
-        empty($exData) ? AccessToken::create($iData): $exData->update(['token' => $iData['token']]);
+        empty($exData) ? AccessToken::create($iData): $exData->update([
+            'token' => $iData['token'],
+            'validity' => $iData['validity']]);
     }
 
     public function tokenUser($id)
@@ -83,7 +84,8 @@ class AuthController extends Controller
 
         } catch ( \Throwable $throwable ) {
             return serverError($throwable->getMessage());
-            Log::error($throwable->getMessage().'. Location : '.$throwable->getFile() .' at line : '.$throwable->getLine());
+            Log::error($throwable->getMessage().'. Location : '.$throwable->getFile() .' at line : '.
+                $throwable->getLine());
         }
     }
 
@@ -92,12 +94,6 @@ class AuthController extends Controller
         try {
             $id = $request->post('id');
             $user = User::where('id', '=', $id)->first();
-
-//            if ($user->active == 0) {
-//                return alreadyExist('The user is not logged in yet');
-//            }
-//
-//            $user->update(['active' => 0]);
 
             AccessToken::where('user_id', '=', $id)->delete();
 

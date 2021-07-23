@@ -24,7 +24,7 @@ class AppKeyFactory extends Factory
     {
         return [
             'app_name' => 'start up',
-            'app_key' => '$a544AFD56654JHJH65465458233345asghfgsa5465ASF635dafdhhh45653llL85222dfasfd154555ASFDAFhabib$'
+            'app_key' => '$dsFadsewad455AD5s5d8wret8v58f8esFF8$'
         ];
     }
 }

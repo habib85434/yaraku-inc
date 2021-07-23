@@ -17,7 +17,7 @@ class ApiAccessTokenValidate
      */
     public function handle(Request $request, Closure $next)
     {
-        $token = $request->header('api_key');
+        $token = $request->header('token');
 
         if (empty($token)) {return responseUnauthorized();}
 
@@ -28,3 +28,4 @@ class ApiAccessTokenValidate
         return $next($request);
     }
 }
+

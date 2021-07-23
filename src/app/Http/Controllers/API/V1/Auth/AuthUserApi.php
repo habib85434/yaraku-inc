@@ -12,15 +12,13 @@ class AuthUserApi extends Controller
 {
     public function getUserByToken(Request $request)
     {
-        //return responseOk($request->header('token'));
          try {
-//             $response['user'] = $this->repository->findUserByToken($request->header('token'));
-//             $user = $this->repository->findUserByToken($request->header('token'));
              $user = AccessToken::where('token','=', $request->header('token'))->first();
-             $response['user'] = User::find($user->id);
+             $response['user'] = User::find($user->user_id);
              return responseOk($response);
          } catch (\Throwable $throwable) {
-             Log::error($throwable->getMessage().'. Location : '.$throwable->getFile() .' at line : '.$throwable->getLine());
+             Log::error($throwable->getMessage().'. Location : '.$throwable->getFile() .' at line : '
+                 .$throwable->getLine());
              return responseCantProcess();
          }
     }

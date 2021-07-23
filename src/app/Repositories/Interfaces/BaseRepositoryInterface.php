@@ -27,20 +27,14 @@ interface BaseRepositoryInterface
     function update($id, array $data);
     function updateByUser($id, array $data, $userId);
 
-
     function delete($id);
     function deleteByUser($id, $userId);
 
     function userByEmail(string $email);
     function userActive ( int $id );
 
-    function actionLog( array $data );
     function appLog( array $data );
     function accessToken(array $data, int $userId);
 
-    function breederById(int $userId);
-    function breeder(int $id);
-
-    function customerById(int $userId);
-    function findCustomer(int $id);
 }
+
