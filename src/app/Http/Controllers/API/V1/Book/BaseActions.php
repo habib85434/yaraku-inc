@@ -45,5 +45,22 @@ class BaseActions extends Controller
             'author'        => 'required|max:100'
         ]);
     }
+
+    /**
+     * @param Request $request
+     * @return array
+     */
+    public function setHeadings(Request $request)
+    {
+        $heading = [];
+        if (! empty( $request->query('title')) && $request->query('title') == 1) {
+            array_push($heading, 'Title');
+        }
+        if (! empty( $request->query('author')) && $request->query('author') == 1) {
+            array_push($heading, 'Author');
+        }
+
+        return $heading;
+    }
 }
 

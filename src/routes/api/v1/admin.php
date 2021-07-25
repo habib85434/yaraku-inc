@@ -9,6 +9,9 @@ Route::group(['prefix' => 'books'], function (){
     Route::delete('/{id}', 'App\Http\Controllers\Api\V1\Book\Delete@destroyBook')
         ->name('book_delete');
     Route::post('/search', 'App\Http\Controllers\Api\V1\Book\Search@searchBook')->name('book_search');
-    Route::get('/export', 'App\Http\Controllers\Api\V1\Book\Export@exportBook')->name('book_export');
+    Route::post('/export-xml', 'App\Http\Controllers\Api\V1\Book\ExportXML@exportXMLBook')
+        ->name('book_export_xml')->middleware('xml');
+    Route::post('/export-csv', 'App\Http\Controllers\Api\V1\Book\ExportCSV@exportCSVBook')
+        ->name('book_export_csv');
 });
 
