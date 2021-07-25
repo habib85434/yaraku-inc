@@ -6,8 +6,11 @@ namespace App\Repositories;
 
 use App\Models\Book;
 use App\Repositories\Interfaces\BookRepositoryInterface;
-use App\Services\Sort\BookSorting;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Log;
+
 
 class BookRepository extends BaseRepository implements BookRepositoryInterface
 {
@@ -89,6 +92,12 @@ class BookRepository extends BaseRepository implements BookRepositoryInterface
         }
     }
 
+    /**
+     * @param array $data
+     * @param int $record
+     * @param string $sortKey
+     * @return LengthAwarePaginator|Builder[]|Collection
+     */
     public function searchByTitleOrAuthor(array $data, int $record, string $sortKey)
     {
         try {
@@ -117,9 +126,26 @@ class BookRepository extends BaseRepository implements BookRepositoryInterface
         }
     }
 
-    public function exportCSVorXML(string $exportType, string $exportKey)
+    public function exportData(array $fields)
     {
-        // TODO: Implement exportCSVorXML() method.
+        try {
+            $select = [];
+            $books = $this->model->query();
+
+            if (empty($fields)) {
+                return null;
+            }
+            for ($i = 0; $i < count($fields); $i++) {
+                array_push($select, strtolower($fields[$i]));
+            }
+
+            $books = $books->select($select)->get();
+            return $books;
+
+        } catch ( \Throwable $throwable ) {
+            Log::error($throwable->getMessage().'. Location : '.$throwable->getFile() .' at line : '
+                .$throwable->getLine());
+        }
     }
 }
 

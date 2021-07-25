@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1\Book;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\BookRepository;
 use App\Repositories\Interfaces\BookRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -17,7 +18,7 @@ class BaseActions extends Controller
     /**
      * @param BookRepositoryInterface $repository
      */
-    public function __construct( BookRepositoryInterface $repository )
+    public function __construct( BookRepository $repository )
     {
         $this->repository = $repository;
     }

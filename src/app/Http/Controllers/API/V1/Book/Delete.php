@@ -12,7 +12,7 @@ class Delete extends BaseActions
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
+    public function destroyBook($id)
     {
         try {
             $book = $this->repository->find($id);

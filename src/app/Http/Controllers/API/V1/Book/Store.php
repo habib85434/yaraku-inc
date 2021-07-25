@@ -12,7 +12,7 @@ class Store extends BaseActions
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function bookStore(Request $request)
+    public function storeBook(Request $request)
     {
         try {
             $validation = $this->storeValidation($request);

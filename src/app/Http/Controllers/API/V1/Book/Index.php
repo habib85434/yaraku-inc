@@ -12,7 +12,7 @@ class Index extends BaseActions
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function bookList (Request $request)
+    public function listBook (Request $request)
     {
         try {
             $sortKey = $request->query('sort');

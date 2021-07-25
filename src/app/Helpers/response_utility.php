@@ -57,7 +57,8 @@ if (!function_exists('responseCantProcess')) {
     function responseCantProcess(\Throwable $t = null, $message = null)
     {
         if (!$message){
-            $message2 = (config('app.debug') && $t ) ? $t->getMessage().'. Location : '.$t->getFile() .' at line : '.$t->getLine() : 'Cannot process request';
+            $message2 = (config('app.debug') && $t ) ? $t->getMessage().'. Location : '.$t->getFile() .' at line : '
+                .$t->getLine() : 'Cannot process request';
         }
         $response = [
             'success' => false,
@@ -160,6 +161,7 @@ if (!function_exists('noContent')) {
     {
         $response = [
             'success' => false,
+            'code' => 404,
             'message' => $message
         ];
 

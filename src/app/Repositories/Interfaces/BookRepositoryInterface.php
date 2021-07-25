@@ -9,6 +9,6 @@ interface BookRepositoryInterface extends BaseRepositoryInterface
     public function list(int $record, string $sortKey);
     public function addToList(array $data);
     public function searchByTitleOrAuthor(array $data, int $record, string $sortKey);
-    public function exportCSVorXML(string $exportType, string $exportKey);
+    public function exportData(array $fields);
 }
 

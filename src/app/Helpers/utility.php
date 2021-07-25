@@ -58,3 +58,33 @@ if (!function_exists('generateRegistrationToken')) {
     }
 }
 
+if (!function_exists('serverTimeHash')) {
+    function serverTimeHash()
+    {
+        $today = date('Y-d-m H:i:s');
+        return md5($today);
+    }
+}
+
+if (!function_exists('delete_directory')) {
+    function delete_directory($dirname)
+    {
+        $dir_handle = null;
+        if (is_dir($dirname))
+            $dir_handle = opendir($dirname);
+        if (!$dir_handle && empty($dir_handle))
+            return false;
+        while($file = readdir($dir_handle)) {
+            if ($file != "." && $file != "..") {
+                if (!is_dir($dirname."/".$file))
+                    unlink($dirname."/".$file);
+                else
+                    delete_directory($dirname.'/'.$file);
+            }
+        }
+        closedir($dir_handle);
+        rmdir($dirname);
+        return true;
+    }
+}
+
