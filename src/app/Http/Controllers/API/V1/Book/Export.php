@@ -4,18 +4,21 @@ namespace App\Http\Controllers\Api\V1\Book;
 
 use App\Libs\Export\ExcelExport;
 use App\Libs\Export\XMLExport;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 
 class Export extends BaseActions
 {
     /**
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse|string
+     * @return JsonResponse
      */
     public function exportBook(Request $request)
     {
         try {
+            $rootUrl = 'http://'.$request->getHost().Config::get('app.server_root');
             $heading = [];
             $type = $request->query('type') ?? 'csv';
 
@@ -37,11 +40,13 @@ class Export extends BaseActions
 
                 $export = new XMLExport($books, $fileName);
             }
-            return $export->exicute();
+            $response['link'] = $rootUrl.$export->exicute();
+
+            return responseSuccess($response);
         }  catch ( \Throwable $throwable ) {
             Log::error($throwable->getMessage().'. Location : '.$throwable->getFile() .' at line : '
                 .$throwable->getLine());
-            return responseCantProcess();
+            return responseInternalServerError();
         }
     }
 }

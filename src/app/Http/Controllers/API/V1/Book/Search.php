@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\V1\Book;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -33,13 +32,13 @@ class Search extends BaseActions
             $data['title'] = $title;
             $data['author'] = $author;
 
-            $response['books'] = $this->repository->searchByTitleOrAuthor($data, $record, $sortKey);
+            $response['books'] = $this->repository->list($data, $record, $sortKey);
 
-            return responseOk($response);
+            return responseSuccess($response);
         }  catch ( \Throwable $throwable ) {
             Log::error($throwable->getMessage().'. Location : '.$throwable->getFile() .' at line : '
                 .$throwable->getLine());
-            return responseCantProcess();
+            return responseInternalServerError();
         }
     }
 }

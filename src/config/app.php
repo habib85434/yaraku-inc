@@ -121,6 +121,8 @@ return [
 
     'key' => env('APP_KEY'),
 
+    'server_root' => env('SERVER_ROOT', '/pp/yaraku-inc/src'),
+
     'cipher' => 'AES-256-CBC',
 
     /*

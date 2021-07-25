@@ -1,24 +1,26 @@
 <?php
-if (!function_exists('responseOk')) {
-    function responseOk($data = null, $message = "Request processed successfully")
+if (!function_exists('responseSuccess')) {
+    function responseSuccess($data = null, $message = "Request processed successfully", $code = 200)
     {
         $response = [
             'success' => true,
+            'code' => $code,
             'message' => $message
         ];
 
         if ($data) {
-            $response = $data;
+            $response['data'] = $data;
         }
         return response()->json($response, 200);
     }
 }
 
 if (!function_exists('responseCreated')) {
-    function responseCreated($data = null, $message = null)
+    function responseCreated($data = null, $message = null, $code = 201)
     {
         $response = [
             'success' => true,
+            'code' => $code,
             'message' => $message?:'Record created successfully'
         ];
         if ($data) {
@@ -28,152 +30,78 @@ if (!function_exists('responseCreated')) {
     }
 }
 
-if (!function_exists('responsePatched')) {
-    function responsePatched($data = null)
+if (!function_exists('responseNoContent')) {
+    function responseNoContent($message = "There is no data found", $code=404)
     {
-        $response = [
-            'success' => true,
-            'message' => 'Record patched successfully'
-        ];
-        if ($data) {
-            $response['data'] = $data;
-        }
-        return response()->json($response, 200);
-    }
-}
-
-if (!function_exists('responseDeleted')) {
-    function responseDeleted()
-    {
-        $response = [
-            'success' => true,
-            'message' => 'Record deleted successfully'
-        ];
-        return response()->json($response, 200);
-    }
-}
-
-if (!function_exists('responseCantProcess')) {
-    function responseCantProcess(\Throwable $t = null, $message = null)
-    {
-        if (!$message){
-            $message2 = (config('app.debug') && $t ) ? $t->getMessage().'. Location : '.$t->getFile() .' at line : '
-                .$t->getLine() : 'Cannot process request';
-        }
         $response = [
             'success' => false,
-            'message' =>  'Internal server error'
+            'code' => $code,
+            'message' => $message
+        ];
+
+        return response()->json($response, 200);
+    }
+}
+
+if (!function_exists('responseFaild')) {
+    function responseFaild($message = 'Failed to process', $code=400)
+    {
+        $response = [
+            'success' => false,
+            'code' => $code,
+            'message' =>  $message
         ];
         return response()->json($response, 400);
     }
 }
 
-if (!function_exists('responseUnauthorized')) {
-    function responseUnauthorized()
+if (!function_exists('responseInternalServerError')) {
+    function responseInternalServerError($message = 'Internal server error', $code=500)
     {
         $response = [
             'success' => false,
-            'message' => 'Unauthorized'
+            'code' => $code,
+            'message' =>  $message
         ];
-        return response()->json($response, 401);
-    }
-}
-
-if (!function_exists('serverError')) {
-    function serverError($message = 'Internal server error')
-    {
-        $response = [
-            'success' => false,
-            'message' => $message
-        ];
-
         return response()->json($response, 500);
     }
 }
 
-if (!function_exists('validationError')) {
-    function validationError($message = 'Please check input fields.')
-    {
-        $response = [
-            'success' => false,
-            'message' => $message
-        ];
 
-        return response()->json($response, 422);
-    }
-}
-
-if (!function_exists('validationWithDetailsError')) {
-    function validationWithDetailsError( $data = null)
-    {
-        $response = [
-            'success' => false,
-            'message' => 'Validation fails. Please check all fields carefully.',
-        ];
-
-        if ($data) {
-            $response['data'] = $data;
-        }
-
-        return response()->json($response, 422);
-    }
-}
-
-if (!function_exists('responseContactAdmin')) {
-    function responseContactAdmin($message)
-    {
-        $response = [
-            'success' => false,
-            'message' => $message
-        ];
-        return response()->json($response, 400);
-    }
-}
-
-if (!function_exists('authSuccess')) {
-    function authSuccess($data = null, $message = "Login processed successfully")
+if (!function_exists('responseDeleted')) {
+    function responseDeleted($message = 'Record deleted successfully', $code=200)
     {
         $response = [
             'success' => true,
-            'message' => $message?:'Login processed successfully'
-        ];
-        if ($data) {
-            $response['data'] = $data;
-        }
-        return response()->json($response, 202);
-    }
-}
-
-if (!function_exists('authFail')) {
-    function authFail($message = "Incorrect email or password")
-    {
-        $response = [
-            'success' => false,
-            'message' => $message?:'Incorrect email or password'
-        ];
-
-        return response()->json($response, 203);
-    }
-}
-
-if (!function_exists('noContent')) {
-    function noContent($message = "There is no data found")
-    {
-        $response = [
-            'success' => false,
-            'code' => 404,
+            'code' => $code,
             'message' => $message
         ];
-
         return response()->json($response, 200);
     }
 }
 
-if (!function_exists('alreadyExist')) {
-    function alreadyExist($message = "The record is already exist")
+if (!function_exists('responseValidationError')) {
+    function responseValidationError($data = null, $message = 'Please check input fields.', $code= 422)
     {
         $response = [
             'success' => false,
+            'code' => $code,
+            'message' => $message
+        ];
+        if ($data) {
+            $response['data'] = $data;
+        }
+
+        return response()->json($response, 422);
+    }
+}
+
+if (!function_exists('responseExist')) {
+    function responseExist($message = "The record is already exist", $code=409)
+    {
+        $response = [
+            'success' => false,
+            'code' => $code,
             'message' => $message
         ];
 
@@ -181,4 +109,15 @@ if (!function_exists('alreadyExist')) {
     }
 }
 
+if (!function_exists('responseUnauthorized')) {
+    function responseUnauthorized($message = 'Unauthorized', $code=401)
+    {
+        $response = [
+            'success' => false,
+            'code' => $code,
+            'message' => $message
+        ];
+        return response()->json($response, 401);
+    }
+}
 

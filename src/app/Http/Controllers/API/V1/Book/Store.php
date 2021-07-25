@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\V1\Book;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -17,7 +16,7 @@ class Store extends BaseActions
         try {
             $validation = $this->storeValidation($request);
             if ( $validation->fails() ) {
-                return validationWithDetailsError($validation->errors());
+                return responseValidationError($validation->errors());
             }
 
             $data = [];
@@ -30,7 +29,7 @@ class Store extends BaseActions
         }  catch ( \Throwable $throwable ) {
             Log::error($throwable->getMessage().'. Location : '.$throwable->getFile() .' at line : '
                 .$throwable->getLine());
-            return responseCantProcess();
+            return responseInternalServerError();
         }
     }
 }

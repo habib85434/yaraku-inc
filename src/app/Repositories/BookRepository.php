@@ -3,7 +3,6 @@
 
 namespace App\Repositories;
 
-
 use App\Models\Book;
 use App\Repositories\Interfaces\BookRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -24,15 +23,25 @@ class BookRepository extends BaseRepository implements BookRepositoryInterface
     }
 
     /**
+     * @param array|null $data
      * @param int $record
      * @param string|null $sortKey
-     * @return mixed
+     * @return Builder[]|Collection|LengthAwarePaginator
      */
-    public function list(int $record, string $sortKey = null)
+    public function list(array $data=null, int $record, string $sortKey = null)
     {
         try {
             $this->record = $record;
             $books = $this->model->query();
+
+            if (!empty($data)) {
+                if (!empty($data['title'])) {
+                    $books->where('title', '=', $data['title']);
+                }
+                if (!empty($data['author'])) {
+                    $books->where('author', '=', $data['author']);
+                }
+            }
 
             empty(!$sortKey)
                 ? $books = $this->bookSorting($books, $sortKey)
@@ -93,39 +102,9 @@ class BookRepository extends BaseRepository implements BookRepositoryInterface
     }
 
     /**
-     * @param array $data
-     * @param int $record
-     * @param string $sortKey
-     * @return LengthAwarePaginator|Builder[]|Collection
+     * @param array $fields
+     * @return Builder[]|Collection|null
      */
-    public function searchByTitleOrAuthor(array $data, int $record, string $sortKey)
-    {
-        try {
-            $this->record = $record;
-            $books = $this->model->query();
-
-            if (!empty($data['title'])) {
-                $books->where('title', '=', $data['title']);
-            }
-            if (!empty($data['author'])) {
-                $books->where('author', '=', $data['author']);
-            }
-
-            empty(!$sortKey)
-                ? $books = $this->bookSorting($books, $sortKey)
-                : $books->orderBy('created_at', 'desc');
-
-            $record != 0
-                ? $books = $books->paginate($this->record)
-                : $books = $books->get();
-
-            return $books;
-        } catch ( \Throwable $throwable ) {
-            Log::error($throwable->getMessage().'. Location : '.$throwable->getFile() .' at line : '
-                .$throwable->getLine());
-        }
-    }
-
     public function exportData(array $fields)
     {
         try {

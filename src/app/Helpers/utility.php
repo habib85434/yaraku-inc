@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Hash;
-
 if (!function_exists('getDataType')) {
     function getDataType($data, $columnName = null)
     {
@@ -52,7 +50,6 @@ if (!function_exists('generateRegistrationToken')) {
     function generateRegistrationToken($email)
     {
         $today = date('Y-d-m H:i:s');
-        //return Hash::make($today.$id);
         $stOne = md5($today.$email);
         return md5($stOne);
     }

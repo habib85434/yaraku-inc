@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\V1\Book;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -17,13 +16,13 @@ class Index extends BaseActions
         try {
             $sortKey = $request->query('sort');
             empty($request->query('record')) ? $record = 0 : $record = $request->query('record');
-            $response['book_lists'] = $this->repository->list($record, $sortKey);
+            $response['books'] = $this->repository->list(null,$record, $sortKey);
 
-            return responseOk($response);
+            return responseSuccess($response);
         } catch (\Throwable $throwable) {
             Log::error($throwable->getMessage().'. Location : '.$throwable->getFile() .' at line : '
                 .$throwable->getLine());
-            return responseCantProcess();
+            return responseInternalServerError();
         }
     }
 }

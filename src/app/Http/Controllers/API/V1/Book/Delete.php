@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\Api\V1\Book;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class Delete extends BaseActions
@@ -17,10 +15,10 @@ class Delete extends BaseActions
         try {
             $book = $this->repository->find($id);
             if (empty($id)) {
-                return validationError('The book ID should not be null');
+                return responseValidationError(null,'The book ID should not be null');
             }
             if (empty($book)) {
-                return validationError('The book could not found !');
+                return responseNoContent('The given book could not found !');
             }
 
             $this->repository->delete($id);
@@ -28,7 +26,7 @@ class Delete extends BaseActions
         }  catch ( \Throwable $throwable ) {
             Log::error($throwable->getMessage().'. Location : '.$throwable->getFile() .' at line : '
                 .$throwable->getLine());
-            return responseCantProcess();
+            return responseInternalServerError();
         }
     }
 }
