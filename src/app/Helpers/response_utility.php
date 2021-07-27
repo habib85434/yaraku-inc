@@ -81,7 +81,7 @@ if (!function_exists('responseDeleted')) {
 }
 
 if (!function_exists('responseValidationError')) {
-    function responseValidationError($data = null, $message = 'Please check input fields.', $code= 422)
+    function responseValidationError($data = null, $message = 'Please check input fields.', $code= 400)
     {
         $response = [
             'success' => false,
@@ -92,7 +92,7 @@ if (!function_exists('responseValidationError')) {
             $response['data'] = $data;
         }
 
-        return response()->json($response, 422);
+        return response()->json($response, 400);
     }
 }
 

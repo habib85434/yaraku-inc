@@ -30,8 +30,8 @@ class BaseActions extends Controller
     public function storeValidation ( Request $request )
     {
         return Validator::make($request->all(), [
-            'title'         => 'required|max:150',
-            'author'        => 'required|max:100'
+            'title'         => 'required|present|max:60',
+            'author'        => 'required|max:50'
         ]);
     }
 
@@ -42,7 +42,7 @@ class BaseActions extends Controller
     public function updateValidation ( Request $request )
     {
         return Validator::make($request->all(), [
-            'author'        => 'required|max:100'
+            'author'        => 'required|max:50'
         ]);
     }
 

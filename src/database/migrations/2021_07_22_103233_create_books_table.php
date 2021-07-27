@@ -15,8 +15,8 @@ class CreateBooksTable extends Migration
     {
         Schema::create('books', function (Blueprint $table) {
             $table->id();
-            $table->string('title',150)->index();
-            $table->string('author',100)->index();
+            $table->string('title',60)->index();
+            $table->string('author',50)->index();
             $table->enum('status',['ACTIVE', 'INACTIVE'])->default('ACTIVE');
             $table->timestamps();
         });
