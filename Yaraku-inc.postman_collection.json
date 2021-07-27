@@ -1,0 +1,280 @@
+{
+	"info": {
+		"_postman_id": "ce4288dd-9f3b-43b8-9381-e48730f69643",
+		"name": "Yaraku-inc",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Books",
+			"item": [
+				{
+					"name": "List",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/books?record=15&page=1&sort=title",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"books"
+							],
+							"query": [
+								{
+									"key": "record",
+									"value": "15"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "sort",
+									"value": "title"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Store",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "It industry. Lorem Ipsum has been the industrys",
+									"type": "text"
+								},
+								{
+									"key": "author",
+									"value": "Dr. jone stemp",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/books",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AuthorUpdate",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "author",
+									"value": "Dr. Jhone stpen Updated",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/books/103?_method=put",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"books",
+								"103"
+							],
+							"query": [
+								{
+									"key": "_method",
+									"value": "put"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{baseUrl}}/books/102",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"books",
+								"102"
+							],
+							"query": [
+								{
+									"key": "api_key",
+									"value": "f80193b3-ff5f-4232-bdc0-ce9481749b11",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "It industry. Lorem Ipsum has been the industrys",
+									"type": "text"
+								},
+								{
+									"key": "author",
+									"value": "Grace Homenick",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/books/search?record=15&page=1&sort=author",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"books",
+								"search"
+							],
+							"query": [
+								{
+									"key": "record",
+									"value": "15"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "sort",
+									"value": "author"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Export CSV",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml",
+								"type": "text"
+							},
+							{
+								"key": "Content-Disposition",
+								"value": "attachment; filename='text.xml'",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{baseUrl}}/books/export-csv?title=1&author=1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"books",
+								"export-csv"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "1"
+								},
+								{
+									"key": "author",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Export XML",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{baseUrl}}/books/export-xml?title=1&author=1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"books",
+								"export-xml"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "1"
+								},
+								{
+									"key": "author",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
