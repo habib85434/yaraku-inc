@@ -28,7 +28,7 @@ class BookRepository extends BaseRepository implements BookRepositoryInterface
      * @param string|null $sortKey
      * @return Builder[]|Collection|LengthAwarePaginator
      */
-    public function list(array $data=null, int $record, string $sortKey = null)
+    public function list(array $data=null, int $record, string $sortKey = null, string $order)
     {
         try {
             $this->record = $record;
@@ -44,8 +44,8 @@ class BookRepository extends BaseRepository implements BookRepositoryInterface
             }
 
             empty(!$sortKey)
-                ? $books = $this->bookSorting($books, $sortKey)
-                : $books->orderBy('created_at', 'desc');
+                ? $books = $this->bookSorting($books, $sortKey, $order)
+                : $books->orderBy('created_at', $order);
 
             $record != 0
                 ? $books = $books->paginate($this->record)
@@ -63,27 +63,29 @@ class BookRepository extends BaseRepository implements BookRepositoryInterface
      * @param string $sortKey
      * @return mixed
      */
-    private function bookSorting(object $books, string $sortKey)
+    private function bookSorting(object $books, string $sortKey, $order)
     {
-        return $sortKey == 'author' ? $this->sortByAuthor($books) : $this->sortByTitle($books);
+        return $sortKey == 'author' ? $this->sortByAuthor($books, $order) : $this->sortByTitle($books, $order);
     }
 
     /**
      * @param object $books
+     * @param string $order
      * @return mixed
      */
-    private function sortByAuthor(object $books)
+    private function sortByAuthor(object $books, string $order)
     {
-        return $books->orderBy('author', 'asc');
+        return $books->orderBy('author', $order);
     }
 
     /**
      * @param object $books
+     * @param string $order
      * @return mixed
      */
-    private function sortByTitle(object $books)
+    private function sortByTitle(object $books, string $order)
     {
-        return $books->orderBy('title', 'asc');
+        return $books->orderBy('title', $order);
     }
 
     /**

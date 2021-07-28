@@ -18,9 +18,14 @@ class Search extends BaseActions
             $data=[];
             $title = null;
             $author = null;
+            $order = 'desc';
 
             $sortKey = $request->query('sort');
             empty($request->query('record')) ? $record = 0 : $record = $request->query('record');
+
+            if (! empty($request->query('order'))) {
+                $order = $request->query('order');
+            }
 
             if (isset($request->title)) {
                 $title = $request->title;
@@ -32,7 +37,7 @@ class Search extends BaseActions
             $data['title'] = $title;
             $data['author'] = $author;
 
-            $response['books'] = $this->repository->list($data, $record, $sortKey);
+            $response['books'] = $this->repository->list($data, $record, $sortKey, $order);
 
             return responseSuccess($response);
         }  catch ( \Throwable $throwable ) {

@@ -14,7 +14,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/books?record=15&page=1&sort=title",
+							"raw": "{{baseUrl}}/books?record=15&page=1&sort=title&order=desc",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -33,6 +33,10 @@
 								{
 									"key": "sort",
 									"value": "title"
+								},
+								{
+									"key": "order",
+									"value": "desc"
 								}
 							]
 						}
@@ -167,7 +171,7 @@
 							]
 						},
 						"url": {
-							"raw": "{{baseUrl}}/books/search?record=15&page=1&sort=author",
+							"raw": "{{baseUrl}}/books/search?record=15&page=1&sort=author&order=desc",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -187,6 +191,10 @@
 								{
 									"key": "sort",
 									"value": "author"
+								},
+								{
+									"key": "order",
+									"value": "desc"
 								}
 							]
 						}

@@ -14,9 +14,17 @@ class Index extends BaseActions
     public function listBook (Request $request)
     {
         try {
+            $order = 'desc';
             $sortKey = $request->query('sort');
+
             empty($request->query('record')) ? $record = 0 : $record = $request->query('record');
-            $response['books'] = $this->repository->list(null,$record, $sortKey);
+            if (! empty($request->query('order'))) {
+                $order = $request->query('order');
+            }
+
+            $response['books'] = $this->repository->list(null,$record, $sortKey, $order);
+
+
 
             return responseSuccess($response);
         } catch (\Throwable $throwable) {
@@ -26,3 +34,4 @@ class Index extends BaseActions
         }
     }
 }
+
