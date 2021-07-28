@@ -10,7 +10,6 @@ class SearchTest extends TestCase
 {
     use RefreshDatabase, WithoutMiddleware;
 
-    public $baseUrl = 'http://127.0.0.1:8000/api/v1/books/';
     public $expectedCode = 200;
 
     public function test_search_by_author()

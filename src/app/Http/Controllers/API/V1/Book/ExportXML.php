@@ -20,7 +20,7 @@ class ExportXML extends BaseActions
 
             $books = $this->repository->exportData($heading);
 
-            $xmlData =  response()->xml(['books' => $books->toArray()]);
+            $xmlData =  response()->xml(['book' => $books->toArray()]);
 
             return $xmlData;
 

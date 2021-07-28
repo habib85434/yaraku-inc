@@ -10,7 +10,6 @@ class StoreTest extends TestCase
 {
     use RefreshDatabase, WithoutMiddleware;
 
-    public $baseUrl = 'http://127.0.0.1:8000/api/v1/books/';
     public $expectedCode = 201;
 
     public function test_create_a_book_without_any_error()
@@ -20,9 +19,9 @@ class StoreTest extends TestCase
 
         $response = $this->post($this->baseUrl, $book);
 
+        $response->assertStatus($this->expectedCode);
         $this->assertEquals($this->expectedCode, $response['code']);
         $this->assertEquals(true, $response['success']);
-        $response->assertStatus($this->expectedCode);
         $this->assertNotEmpty($response['data']);
         $this->assertEquals($book['title'], $response['data']['book']['title']);
         $this->assertEquals($book['author'], $response['data']['book']['author']);

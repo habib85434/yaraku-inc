@@ -12,12 +12,11 @@ class ExportCSVTest extends TestCase
 {
     use RefreshDatabase, WithoutMiddleware;
 
-    public $baseUrl = 'http://127.0.0.1:8000/api/v1/books/';
     public $expectedCode = 200;
 
     public function test_csv_export_with_title_only()
     {
-        Book::factory()->count(10)->create();
+        $this->createBooks(10);
 
         $response = $this->withHeaders([
             'Content-Type' => 'application/json',
@@ -42,7 +41,7 @@ class ExportCSVTest extends TestCase
 
     public function test_csv_export_with_author_only()
     {
-        Book::factory()->count(10)->create();
+        $this->createBooks(10);
 
         $response = $this->withHeaders([
             'Content-Type' => 'application/json',
@@ -67,7 +66,7 @@ class ExportCSVTest extends TestCase
 
     public function test_csv_export_with_both_title_and_author()
     {
-        Book::factory()->count(10)->create();
+        $this->createBooks(10);
 
         $response = $this->withHeaders([
             'Content-Type' => 'application/json',
@@ -88,16 +87,6 @@ class ExportCSVTest extends TestCase
                 }
             }
         }
-    }
-
-    public function readCSV($csvFile, $array)
-    {
-        $file_handle = fopen($csvFile, 'r');
-        while (!feof($file_handle)) {
-            $line_of_text[] = fgetcsv($file_handle, 0, $array['delimiter']);
-        }
-        fclose($file_handle);
-        return $line_of_text;
     }
 }
 

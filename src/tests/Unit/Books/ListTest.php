@@ -11,76 +11,121 @@ class ListTest extends TestCase
 {
     use RefreshDatabase, WithoutMiddleware;
 
-    public $baseUrl = 'http://127.0.0.1:8000/api/v1/books/';
     public $expectedCode = 200;
 
-    public function test_create_sort_data()
-    {
-        $book1['title'] = 'How I Met Myself';
-        $book1['author'] = 'David A Hill';
-        $book2['title'] = 'The Tale of Peter Rabbit';
-        $book2['author'] = 'Beatrix Potter';
-
-        $this->createBook($book1);
-        $this->createBook($book2);
-
-        $this->assertDatabaseHas('books', [
-            'title' => $book1['title'],
-        ]);
-    }
-
-    public function test_books_list_sort_by_title()
+    public function test_books_list_sort_asc_by_title()
     {
         $book['title'] = 'A Little Girl';
         $book['author'] = 'David Jonson';
         $this->createBook($book);
 
-        $this->test_create_sort_data();
+        $this->createTestData();
 
-        $response = $this->get($this->baseUrl.'?sort=title');
+        $response = $this->get($this->baseUrl.'?sort=title&order=asc');
 
+        $response->assertStatus($this->expectedCode);
+        $this->assertEquals($this->expectedCode, $response['code']);
+        $this->assertEquals(true, $response['success']);
+        $this->assertEquals($book['title'], $response['data']['books'][0]['title']);
         $this->assertDatabaseHas('books', [
             'title' => $book['title'],
         ]);
-        $this->assertEquals($book['title'], $response['data']['books'][0]['title']);
-        $this->assertEquals($this->expectedCode, $response['code']);
-        $response->assertStatus($this->expectedCode);
     }
 
-    public function test_books_list_not_sort_by_title()
+    public function test_books_list_sort_desc_by_title()
+    {
+        $book['title'] = 'Zza Little Girl';
+        $book['author'] = 'David Jonson';
+        $this->createBook($book);
+
+        $this->createTestData();
+
+        $response = $this->get($this->baseUrl.'?sort=title&order=desc');
+
+        $response->assertStatus($this->expectedCode);
+        $this->assertEquals($this->expectedCode, $response['code']);
+        $this->assertEquals(true, $response['success']);
+        $this->assertEquals($book['title'], $response['data']['books'][0]['title']);
+        $this->assertDatabaseHas('books', [
+            'title' => $book['title'],
+        ]);
+    }
+
+    public function test_books_list_not_sort_asc_by_title()
     {
         $book['title'] = 'A Little Girl';
         $book['author'] = 'David Jonson';
         $this->createBook($book);
 
-        $this->test_create_sort_data();
+        $this->createTestData();
 
-        $response = $this->get($this->baseUrl.'?sort=author');
+        $response = $this->get($this->baseUrl.'?sort=title&order=desc');
+
+        $response->assertStatus($this->expectedCode);
+        $this->assertEquals($this->expectedCode, $response['code']);
+        $this->assertEquals(true, $response['success']);
 
         $this->assertDatabaseHas('books', [
             'title' => $book['title'],
         ]);
         $this->assertNotEquals($book['title'], $response['data']['books'][0]['title']);
-        $this->assertEquals($this->expectedCode, $response['code']);
-        $response->assertStatus($this->expectedCode);
     }
 
-    public function test_books_list_sort_by_author()
+    public function test_books_list_not_sort_desc_by_title()
+    {
+        $book['title'] = 'Zz Little Girl';
+        $book['author'] = 'David Jonson';
+        $this->createBook($book);
+
+        $this->createTestData();
+
+        $response = $this->get($this->baseUrl.'?sort=title&order=asc');
+
+        $response->assertStatus($this->expectedCode);
+        $this->assertEquals($this->expectedCode, $response['code']);
+        $this->assertEquals(true, $response['success']);
+        $this->assertNotEquals($book['title'], $response['data']['books'][0]['title']);
+        $this->assertDatabaseHas('books', [
+            'title' => $book['title'],
+        ]);
+    }
+
+    public function test_books_list_sort_asc_by_author()
     {
         $book['title'] = 'Red rose';
         $book['author'] = 'Aabanol Lie';
         $this->createBook($book);
 
-        $this->test_create_sort_data();
+        $this->createTestData();
 
-        $response = $this->get($this->baseUrl.'?sort=author');
+        $response = $this->get($this->baseUrl.'?sort=author&order=asc');
 
+        $response->assertStatus($this->expectedCode);
+        $this->assertEquals($this->expectedCode, $response['code']);
+        $this->assertEquals(true, $response['success']);
         $this->assertDatabaseHas('books', [
             'author' => $book['author'],
         ]);
-        $this->assertEquals($book['title'], $response['data']['books'][0]['title']);
-        $this->assertEquals($this->expectedCode, $response['code']);
+        $this->assertEquals($book['author'], $response['data']['books'][0]['author']);
+    }
+
+    public function test_books_list_not_sort_asc_by_author()
+    {
+        $book['title'] = 'Red rose';
+        $book['author'] = 'Aabanol Lie';
+        $this->createBook($book);
+
+        $this->createTestData();
+
+        $response = $this->get($this->baseUrl.'?sort=author&order=desc');
+
         $response->assertStatus($this->expectedCode);
+        $this->assertEquals($this->expectedCode, $response['code']);
+        $this->assertEquals(true, $response['success']);
+        $this->assertDatabaseHas('books', [
+            'author' => $book['author'],
+        ]);
+        $this->assertNotEquals($book['author'], $response['data']['books'][0]['author']);
     }
 
     public function test_books_list_not_sort_by_author()
@@ -89,16 +134,36 @@ class ListTest extends TestCase
         $book['author'] = 'Aabanol Lie';
         $this->createBook($book);
 
-        $this->test_create_sort_data();
+        $this->createTestData();
 
-        $response = $this->get($this->baseUrl.'?sort=title');
+        $response = $this->get($this->baseUrl.'?sort=title&order=asc');
 
+        $response->assertStatus($this->expectedCode);
+        $this->assertEquals($this->expectedCode, $response['code']);
+        $this->assertEquals(true, $response['success']);
         $this->assertDatabaseHas('books', [
             'author' => $book['author'],
         ]);
         $this->assertNotEquals($book['author'], $response['data']['books'][0]['author']);
-        $this->assertEquals($this->expectedCode, $response['code']);
+    }
+
+    public function test_books_list_not_sort_by_title()
+    {
+        $book['title'] = 'A Red rose';
+        $book['author'] = 'Zabanol Lie';
+        $this->createBook($book);
+
+        $this->createTestData();
+
+        $response = $this->get($this->baseUrl.'?sort=author&order=asc');
+
         $response->assertStatus($this->expectedCode);
+        $this->assertEquals($this->expectedCode, $response['code']);
+        $this->assertEquals(true, $response['success']);
+        $this->assertDatabaseHas('books', [
+            'author' => $book['author'],
+        ]);
+        $this->assertNotEquals($book['title'], $response['data']['books'][0]['title']);
     }
 
     public function test_check_pagination_records_is_correct()
@@ -108,9 +173,11 @@ class ListTest extends TestCase
 
         $response = $this->get($this->baseUrl.'?record='.$record);
 
-        $this->assertEquals($record, count($response['data']['books']['data']));
-        $this->assertEquals($this->expectedCode, $response['code']);
         $response->assertStatus($this->expectedCode);
+        $this->assertEquals($this->expectedCode, $response['code']);
+        $this->assertEquals(true, $response['success']);
+
+        $this->assertEquals($record, count($response['data']['books']['data']));
     }
 
     public function test_check_pagination_records_is_not_correct()
@@ -121,18 +188,10 @@ class ListTest extends TestCase
 
         $response = $this->get($this->baseUrl.'?record='.$record);
 
-        $this->assertNotEquals($wrontRecord, count($response['data']['books']['data']));
+        $response->assertStatus($this->expectedCode);
         $this->assertEquals($this->expectedCode, $response['code']);
-    }
-
-    /**
-     * @param string $title
-     * @param string $author
-     * @return void
-     */
-    public function createBook(array $book)
-    {
-        Book::create($book);
+        $this->assertEquals(true, $response['success']);
+        $this->assertNotEquals($wrontRecord, count($response['data']['books']['data']));
     }
 }
 

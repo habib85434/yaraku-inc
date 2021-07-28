@@ -12,7 +12,6 @@ class ExportXMLTest extends TestCase
 {
     use RefreshDatabase, WithoutMiddleware;
 
-    public $baseUrl = 'http://127.0.0.1:8000/api/v1/books/';
     public $expectedCode = 200;
 
     public function test_xml_export_with_title_only()
@@ -26,8 +25,8 @@ class ExportXMLTest extends TestCase
 
         $response = xml_decode($response);
 
-        if (isset($response['books'])) {
-            foreach ($response['books'] as $row) {
+        if (isset($response['book'])) {
+            foreach ($response['book'] as $row) {
                 if (array_key_exists('title', $row)) {
                     $this->assertTrue(true);
                 }
@@ -49,8 +48,8 @@ class ExportXMLTest extends TestCase
 
         $response = xml_decode($response);
 
-        if (isset($response['books'])) {
-            foreach ($response['books'] as $row) {
+        if (isset($response['book'])) {
+            foreach ($response['book'] as $row) {
                 if (array_key_exists('title', $row)) {
                     $this->assertTrue(false);
                 }
@@ -72,8 +71,8 @@ class ExportXMLTest extends TestCase
 
         $response = xml_decode($response);
 
-        if (isset($response['books'])) {
-            foreach ($response['books'] as $row) {
+        if (isset($response['book'])) {
+            foreach ($response['book'] as $row) {
                 if (array_key_exists('title', $row)) {
                     $this->assertTrue(true);
                 }
