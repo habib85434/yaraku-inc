@@ -1,0 +1,37 @@
+html{
+    margin: 0 auto;
+}
+body {
+    margin: 0;
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    height: 100%;
+    /* background-color: #EDEFF0; */
+    padding: 0 !important;
+    overflow: auto !important;
+    line-height: unset;
+}
+html, body {
+    height: 100%;
+}
+
+#app {
+    height: 100%;
+  }
+
+.default-input {
+    /* display: block; */
+    width: 100%;
+    height: calc(1.6em + 0.75rem + 2px);
+    padding: 0.375rem 0.75rem;
+    font-size: 0.9rem;
+    font-weight: 400;
+    line-height: 1.6;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #7b7c7f;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  }
