@@ -46,6 +46,20 @@
                 </div>
               </div>
             </div>
+            <!-- <br /> -->
+            <div v-if="storeForm.errors" class="row error-mess">
+              <div class="col-md-5">
+                <div v-if="storeForm.errors.title">
+                  {{ storeForm.errors.title[0] }}
+                </div>
+              </div>
+
+              <div class="col-md-5">
+                <div v-if="storeForm.errors.author">
+                  {{ storeForm.errors.author[0] }}
+                </div>
+              </div>
+            </div>
           </div>
         </form>
       </div>
@@ -272,6 +286,7 @@ export default {
         record: this.$route.query.record,
         sort: this.$route.query.sort,
         order: this.$route.query.order,
+        mode: this.$route.query.mode,
       },
       editForm: new Form({
         author: "",
@@ -289,6 +304,7 @@ export default {
       storeForm: new Form({
         author: null,
         title: null,
+        errors: {},
       }),
     };
   },
@@ -326,6 +342,9 @@ export default {
 
       if (this.$route.query.order == undefined && !this.$route.query.order)
         this.queryStrings.order = "asc";
+
+      if (this.$route.query.mode == undefined && !this.$route.query.mode)
+        this.queryStrings.mode = "0101";
     },
 
     setQueryParams() {
@@ -336,12 +355,30 @@ export default {
           page: this.queryStrings.page,
           sort: this.queryStrings.sort,
           order: this.queryStrings.order,
+          mode: this.queryStrings.mode,
         },
       });
     },
 
     handleStoreSubmit() {
-      alert("need to add validator");
+      this.storeBook(this.storeForm)
+        .then((res) => {
+          if (res.data.success) {
+            this.storeForm.errors = {};
+            this.$swal({
+              title: "Success",
+              text: res.data.message,
+              type: "success",
+            });
+            this.queryStrings.mode = "0000";
+            this.getBookList(this.queryStrings);
+          }
+        })
+        .catch((err) => {
+          if (err.response.data.code == 400) {
+            this.storeForm.errors = err.response.data.data;
+          }
+        });
     },
 
     handleSearchSubmit() {
@@ -443,6 +480,7 @@ export default {
         this.queryStrings.sort = "author";
         this.queryStrings.order = "desc";
       }
+      this.queryStrings.mode = "0101";
       this.setQueryParams();
       if (this.search_mood) {
         this.searchForm.params = this.queryStrings;
@@ -483,6 +521,12 @@ export default {
 };
 </script>
 <style scoped>
+.error-mess {
+  text-align: right;
+  color: red;
+  font-size: 0.8em;
+  margin-top: 0.3rem;
+}
 label {
   font-size: 0.95rem;
 }
@@ -524,7 +568,7 @@ table {
 .form-outer-container {
   background: #f5f5f5;
 
-  border-radius: 10px;
+  border-radius: 4px;
   border: thin solid #dee2e6;
 }
 .add-form-spacing {

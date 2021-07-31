@@ -30,18 +30,25 @@ export default {
 
   actions: {
     async getBookList({ dispatch }, data) {
-      let response = await axios
-        .get(
-          "books?record=" +
+
+      let url = "books?record=" +
+        data.record +
+        "&page=" +
+        data.page +
+        "&sort=" +
+        data.sort +
+        "&order=" +
+        data.order;
+
+      if (data.mode == '0000' || data.mode != '0101') {
+        url = "books?record=" +
           data.record +
           "&page=" +
-          data.page +
-          "&sort=" +
-          data.sort +
-          "&order=" +
-          data.order
-        )
-        // .get("books?record=15")
+          data.page;
+      }
+
+      let response = await axios
+        .get(url)
         .then((res) => {
           if (res.data.success) {
             dispatch("dispatchtBookList", res.data.data.books);
