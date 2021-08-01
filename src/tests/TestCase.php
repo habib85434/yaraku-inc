@@ -3,11 +3,12 @@
 namespace Tests;
 
 use App\Models\Book;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
-    use CreatesApplication;
+    use CreatesApplication, RefreshDatabase;
 
     public $baseUrl = 'http://127.0.0.1:8000/api/v1/books/';
 

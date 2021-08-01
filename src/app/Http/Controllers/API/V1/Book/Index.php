@@ -13,6 +13,7 @@ class Index extends BaseActions
      */
     public function listBook (Request $request)
     {
+        return __DIR__;
         try {
             $order = 'desc';
             $sortKey = $request->query('sort');
@@ -23,9 +24,6 @@ class Index extends BaseActions
             }
 
             $response['books'] = $this->repository->list(null,$record, $sortKey, $order);
-
-
-
             return responseSuccess($response);
         } catch (\Throwable $throwable) {
             Log::error($throwable->getMessage().'. Location : '.$throwable->getFile() .' at line : '

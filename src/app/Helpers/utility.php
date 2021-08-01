@@ -85,3 +85,16 @@ if (!function_exists('delete_directory')) {
     }
 }
 
+if (!function_exists('delete_files_from_directory')) {
+    function delete_files_from_directory($path)
+    {
+        $files = glob($path.'/*'); // get all file names
+        foreach($files as $file){ // iterate files
+            if(is_file($file)) {
+                unlink($file); // delete file
+            }
+        }
+        return true;
+    }
+}
+

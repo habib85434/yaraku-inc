@@ -65,7 +65,7 @@
       </div>
       <div>
         <div class="row pt-2 pb-3">
-          <div class="col-md-10 pt-3">
+          <div class="col-md-8 pt-3">
             <form @submit.prevent="handleSearchSubmit(onSubmit)">
               <div class="">
                 <div class="row">
@@ -113,6 +113,7 @@
               </div>
             </form>
           </div>
+          <div class="col-md-2"></div>
           <div class="col-md-2">
             <div
               class="d-flex justify-content-end align-items-end mb-3"
@@ -122,7 +123,7 @@
               <!-- Button trigger modal -->
               <button
                 type="button"
-                class="btn btn-primary me-3 py-1"
+                class="btn btn-primary btn-csv me-3 py-1"
                 title="Download CSV"
                 data-bs-toggle="modal"
                 data-bs-target="#exampleModal"
@@ -192,7 +193,7 @@
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody v-if="bookList && bookList.data">
             <tr v-for="book in bookList.data" :key="book.id">
               <td>
                 <label>{{ book.title }}</label>
@@ -248,6 +249,7 @@
             </tr>
           </tbody>
         </table>
+        <div v-if="!bookList && !bookList.data">No book found</div>
       </div>
       <br />
       <div v-if="bookList && bookList.data && bookList.data.length">
@@ -358,6 +360,19 @@ export default {
           mode: this.queryStrings.mode,
         },
       });
+    },
+
+    reLoadBookList() {
+      if (this.search_mood) {
+        this.searchForm.params = this.queryStrings;
+        this.searchBook(this.searchForm).then((res) => {
+          if (res.data.success) {
+            this.search_mood = true;
+          }
+        });
+      } else {
+        this.getBookList(this.queryStrings);
+      }
     },
 
     handleStoreSubmit() {
@@ -482,16 +497,7 @@ export default {
       }
       this.queryStrings.mode = "0101";
       this.setQueryParams();
-      if (this.search_mood) {
-        this.searchForm.params = this.queryStrings;
-        this.searchBook(this.searchForm).then((res) => {
-          if (res.data.success) {
-            this.search_mood = true;
-          }
-        });
-      } else {
-        this.getBookList(this.queryStrings);
-      }
+      this.reLoadBookList();
     },
     openModal(Id) {
       this.modalshow = true;
@@ -614,6 +620,9 @@ table {
 }
 .fas {
   line-height: 0.5;
+}
+.btn-csv {
+  margin-right: 0.2rem !important;
 }
 @media (min-width: 768px) {
   .author-input-container {

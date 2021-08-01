@@ -7,6 +7,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
 
 class ExportCSV extends BaseActions
 {
@@ -17,7 +19,7 @@ class ExportCSV extends BaseActions
     public function exportCSVBook(Request $request)
     {
         try {
-            $rootUrl = 'http://'.$request->getHost().Config::get('app.server_root');
+            $rootUrl = 'http://'.$request->getHost().':'.$request->getPort();
             $heading = $this->setHeadings($request);
 
             $books = $this->repository->exportData($heading);

@@ -37,7 +37,6 @@ class DeleteTest extends TestCase
         $this->assertEquals(false, $response['success']);
         $this->assertEquals(404, $response['code']);
         $this->assertEquals(404, 404);
-
     }
 }
 

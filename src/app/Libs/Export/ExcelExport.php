@@ -42,9 +42,14 @@ class ExcelExport
      */
     public function exicute()
     {
-        delete_directory(storage_path().'\framework\laravel-excel');
+        delete_files_from_directory(public_path().'\csv');
+        delete_files_from_directory(storage_path().'\framework\laravel-excel');
         $file =  Excel::download(new ExportBook($this->data, $this->heading), $this->fileName);
-        return '/storage/framework/laravel-excel/'.$file->getFile()->getFilename();
+
+        copy(storage_path().'/framework/laravel-excel/'.$file->getFile()->getFilename(),
+            public_path().'/csv/'.$file->getFile()->getFilename());
+
+        return '/csv/'.$file->getFile()->getFilename();
     }
 }
 

@@ -8,8 +8,6 @@ use App\Repositories\Interfaces\BookRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Log;
-
 
 class BookRepository extends BaseRepository implements BookRepositoryInterface
 {
@@ -30,32 +28,29 @@ class BookRepository extends BaseRepository implements BookRepositoryInterface
      */
     public function list(array $data=null, int $record, string $sortKey = null, string $order)
     {
-        try {
-            $this->record = $record;
-            $books = $this->model->query();
+        $this->record = $record;
+        $books = $this->model->query();
 
-            if (!empty($data)) {
-                if (!empty($data['title'])) {
-                    $books->where('title', '=', $data['title']);
-                }
-                if (!empty($data['author'])) {
-                    $books->where('author', '=', $data['author']);
-                }
+        if (!empty($data)) {
+            if (!empty($data['title'])) {
+                $val = $data['title'];
+                $books->where('title', 'like', "%{$val}%");
             }
-
-            empty(!$sortKey)
-                ? $books = $this->bookSorting($books, $sortKey, $order)
-                : $books->orderBy('created_at', $order);
-
-            $record != 0
-                ? $books = $books->paginate($this->record)
-                : $books = $books->get();
-
-            return $books;
-        } catch ( \Throwable $throwable ) {
-            Log::error($throwable->getMessage().'. Location : '.$throwable->getFile() .' at line : '
-                .$throwable->getLine());
+            if (!empty($data['author'])) {
+                $val = $data['author'];
+                $books->where('author', 'like', "%{$val}%");
+            }
         }
+
+        empty(!$sortKey)
+            ? $books = $this->bookSorting($books, $sortKey, $order)
+            : $books->orderBy('created_at', $order);
+
+        $record != 0
+            ? $books = $books->paginate($this->record)
+            : $books = $books->get();
+
+        return $books;
     }
 
     /**
@@ -94,13 +89,8 @@ class BookRepository extends BaseRepository implements BookRepositoryInterface
      */
     public function addToList(array $data)
     {
-        try {
-            $book = $this->model->create($data);
-            return $book;
-        } catch ( \Throwable $throwable ) {
-            Log::error($throwable->getMessage().'. Location : '.$throwable->getFile() .' at line : '
-                .$throwable->getLine());
-        }
+        $book = $this->model->create($data);
+        return $book;
     }
 
     /**
@@ -109,24 +99,18 @@ class BookRepository extends BaseRepository implements BookRepositoryInterface
      */
     public function exportData(array $fields)
     {
-        try {
-            $select = [];
-            $books = $this->model->query();
+        $select = [];
+        $books = $this->model->query();
 
-            if (empty($fields)) {
-                return null;
-            }
-            for ($i = 0; $i < count($fields); $i++) {
-                array_push($select, strtolower($fields[$i]));
-            }
-
-            $books = $books->select($select)->get();
-            return $books;
-
-        } catch ( \Throwable $throwable ) {
-            Log::error($throwable->getMessage().'. Location : '.$throwable->getFile() .' at line : '
-                .$throwable->getLine());
+        if (empty($fields)) {
+            return null;
         }
+        for ($i = 0; $i < count($fields); $i++) {
+            array_push($select, strtolower($fields[$i]));
+        }
+
+        $books = $books->select($select)->get();
+        return $books;
     }
 }
 

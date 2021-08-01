@@ -30,8 +30,8 @@ export default {
 
   actions: {
     async getBookList({ dispatch }, data) {
-
-      let url = "books?record=" +
+      let url =
+        "books?record=" +
         data.record +
         "&page=" +
         data.page +
@@ -40,11 +40,8 @@ export default {
         "&order=" +
         data.order;
 
-      if (data.mode == '0000' || data.mode != '0101') {
-        url = "books?record=" +
-          data.record +
-          "&page=" +
-          data.page;
+      if (data.mode == "0000" || data.mode != "0101") {
+        url = "books?record=" + data.record + "&page=" + data.page;
       }
 
       let response = await axios
@@ -97,28 +94,32 @@ export default {
     },
 
     async deleteBook(_, id) {
-      let response = await axios
-        .delete('books/' + id)
+      let response = await axios.delete("books/" + id);
 
       return response;
     },
 
     async updateBookAuthor(_, data) {
-      let response = await axios
-        .post('books/' + data.id + '?_method=put', data)
+      let response = await axios.post(
+        "books/" + data.id + "?_method=put",
+        data
+      );
       return response;
     },
 
     async searchBook({ dispatch }, data) {
       let response = await axios
-        .post('books/search?record=' +
+        .post(
+          "books/search?record=" +
           data.params.record +
           "&page=" +
           data.params.page +
           "&sort=" +
           data.params.sort +
           "&order=" +
-          data.params.order, data.data)
+          data.params.order,
+          data.data
+        )
         .then((res) => {
           if (res.data.success) {
             dispatch("dispatchtBookList", res.data.data.books);
@@ -126,7 +127,7 @@ export default {
           }
         })
         .catch((error) => {
-          console.log(error)
+          console.log(error);
           response = error;
         });
 
@@ -134,11 +135,8 @@ export default {
     },
 
     async storeBook(_, data) {
-      let response = await axios
-        .post('books', data)
+      let response = await axios.post("books", data);
       return response;
     },
-
-
   },
 };
