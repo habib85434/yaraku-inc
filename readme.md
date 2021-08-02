@@ -1,4 +1,4 @@
-### Requirement 
+### Requirements
 ```
     - php 7.3
     - mysql 5.7|8.0   
@@ -10,7 +10,7 @@ Step-1 : Clone the project
 ```
 Step-2 : Setup laravel (API) <br />
 - Go to the src folder and rename .env.example to .env <br />
-- Create database and put database fill the created database credentials in the .env file
+- Create database and fill the database credentials in the .env file
 - Run the following commands in the terminal in the src directory
 ```
     - composer install
@@ -50,6 +50,24 @@ There are unit tests are available in the ```tests/Unit/Books/``` directory
 ```
 or run each test or run all tests in the class by using phpStorm
 
+### My deployment description
+- I created a database called book_store
+- Opened ssh and indicated it into public_html folder
+- Clone the project from the git repository.
+- I created two different subdomains
+1. For Backend (API) and the document root directory is "project folder/src/public", <br />
+2. For the Frontend which is vuejs, and the document root directory is "project folder/front-end/dist"
+- Indicate ssh into src folder and change the name of .env.example to .env and put the values of database credentials  and I executed following commands
 
+```
+    - composer install
+    - php artisan config:cache
+```
+- Indicate ssh into the front-end directory and changed the base URL in the front-end/src/main.js and I executed following commands
+```
+    - npm install
+    - npm run build
+```
+Finally, it is time to check the frontend domain  with browser and it worked :  
 
-
+![alt Application](full_d.png)
