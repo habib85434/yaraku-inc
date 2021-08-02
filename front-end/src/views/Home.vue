@@ -40,9 +40,11 @@
               </div>
               <div class="col-md-2">
                 <div class="d-flex justify-content-end btn-container">
-                  <button type="submit" class="btn btn-primary me-3 py-1">
-                    Add
-                  </button>
+                  <BasicButton
+                    btnText="Add"
+                    btnType="submit"
+                    className="me-3 py-1"
+                  />
                 </div>
               </div>
             </div>
@@ -104,9 +106,11 @@
                   </div>
                   <div class="col-md-2">
                     <div class="d-flex justify-content-end btn-container">
-                      <button type="submit" class="btn btn-primary me-3 py-1">
-                        Search
-                      </button>
+                      <BasicButton
+                        btnText="Search"
+                        btnType="submit"
+                        className="me-3 py-1"
+                      />
                     </div>
                   </div>
                 </div>
@@ -119,41 +123,38 @@
               class="d-flex justify-content-end align-items-end mb-3"
               style="height: 100%"
             >
-              <!-- <p class="pe-2">Download:</p> -->
-              <!-- Button trigger modal -->
-              <button
-                type="button"
-                class="btn btn-primary btn-csv me-3 py-1"
+              <ModalButton
+                btnType="button"
+                className="btn-csv me-3 py-1"
                 title="Download CSV"
-                data-bs-toggle="modal"
-                data-bs-target="#exampleModal"
-                @click="openModal('csvModal')"
-              >
-                CSV
-              </button>
-              <button
-                type="button"
-                class="btn btn-primary py-1"
+                btnText="CSV"
+                :method="openModal"
+                param="csvModal"
+              />
+
+              <ModalButton
+                btnType="button"
+                className="btn-csv me-3 py-1"
                 title="Download XML"
-                data-bs-toggle="modal"
-                data-bs-target="#exampleModal"
-                @click="openModal('xmlModal')"
-              >
-                XML
-              </button>
+                btnText="XML"
+                :method="openModal"
+                param="xmlModal"
+              />
             </div>
           </div>
         </div>
       </div>
 
       <div class="table-wrapper">
-        <table class="table table-bordered pt-3">
+        <table
+          class="table table-bordered pt-3"
+          v-if="bookList && bookList.data && bookList.data.length != 0"
+        >
           <thead>
             <tr>
               <th class="ch-th-one" scope="col">
-                <div class="d-flex justify-content-between">
-                  <label>Title</label>
-                  <div class="d-flex flex-column">
+                <div class="d-flex align-items-center">
+                  <div class="d-flex flex-column pe-2">
                     <i
                       @click="clickAscOrDesc('titleAsc')"
                       :class="`fas fa-sort-up sort-icon pt-2 px-2 mb-1 ${
@@ -167,12 +168,12 @@
                       }`"
                     ></i>
                   </div>
+                  <label>Title</label>
                 </div>
               </th>
               <th class="ch-th-tow" scope="col">
-                <div class="d-flex justify-content-between">
-                  <label>Author</label>
-                  <div class="d-flex flex-column">
+                <div class="d-flex align-items-center">
+                  <div class="d-flex flex-column pe-2">
                     <i
                       @click="clickAscOrDesc('authorAsc')"
                       :class="`fas fa-sort-up sort-icon pt-2 px-2 mb-1 ${
@@ -186,6 +187,7 @@
                       }`"
                     ></i>
                   </div>
+                  <label>Author</label>
                 </div>
               </th>
               <th class="ch-th-three" scope="col">
@@ -193,7 +195,7 @@
               </th>
             </tr>
           </thead>
-          <tbody v-if="bookList && bookList.data">
+          <tbody>
             <tr v-for="book in bookList.data" :key="book.id">
               <td>
                 <label>{{ book.title }}</label>
@@ -216,16 +218,16 @@
                     <div
                       class="d-flex justify-content-center edit-btns-container"
                     >
-                      <button type="submit" class="btn btn-primary py-1 me-3">
+                      <BasicButton btnType="submit" className="py-1 me-3">
                         <i class="fas fa-check"></i>
-                      </button>
-                      <button
-                        type="button"
-                        @click="OpenOrCloseEdit()"
-                        class="btn btn-danger py-1"
+                      </BasicButton>
+                      <BasicButton
+                        btnType="button"
+                        :method="OpenOrCloseEdit"
+                        className="btn btn-danger py-1"
                       >
                         <i class="fas fa-times"></i>
-                      </button>
+                      </BasicButton>
                     </div>
                   </div>
                 </form>
@@ -238,18 +240,16 @@
                 >
               </td>
               <td>
-                <button
-                  type="button"
-                  @click="showDeleteAlert(book.id)"
-                  class="btn delete-button py-1"
-                >
-                  <i class="fas fa-trash-alt"></i>
-                </button>
+                <div @click="showDeleteAlert(book.id)">
+                  <DeleteButton btnType="button" className="py-1">
+                    <i class="fas fa-trash-alt"></i>
+                  </DeleteButton>
+                </div>
               </td>
             </tr>
           </tbody>
         </table>
-        <div v-if="!bookList && !bookList.data">No book found</div>
+        <div v-else class="no-book-text">No book found</div>
       </div>
       <br />
       <div v-if="bookList && bookList.data && bookList.data.length">
@@ -268,6 +268,9 @@
 
 <script>
 import YIModal from "@/components/business/yaraku-inc/yi-export-modal.vue";
+import BasicButton from "@/components/basic/buttons/basic-button.vue";
+import DeleteButton from "@/components/basic/buttons/delete-button.vue";
+import ModalButton from "@/components/basic/buttons/modal-button.vue";
 import { mapActions } from "vuex";
 import { mapGetters } from "vuex";
 import { Form } from "vform";
@@ -310,7 +313,7 @@ export default {
       }),
     };
   },
-  components: { YIModal },
+  components: { YIModal, BasicButton, DeleteButton, ModalButton },
   computed: {
     ...mapGetters({
       bookList: "books/bookList",
@@ -387,6 +390,12 @@ export default {
             });
             this.queryStrings.mode = "0000";
             this.getBookList(this.queryStrings);
+            this.storeForm.title = null;
+            this.storeForm.author = null;
+            this.titleAcsSort = false;
+            this.tilteDescSort = false;
+            this.authorAscSort = false;
+            this.authorDescSort = false;
           }
         })
         .catch((err) => {
@@ -540,26 +549,31 @@ th,
 td {
   padding: 10px;
   border: 1px solid #cccccc;
+  vertical-align: middle;
 }
 table {
   border-style: hidden;
   margin: 0px;
 }
 .ch-th-one {
-  width: 341px;
+  width: 45%;
 }
 .ch-th-two {
-  width: 341px;
+  width: 40%;
 }
 .ch-th-three {
   width: 78px;
-  padding-bottom: 1.5rem;
+  vertical-align: middle;
 }
 
 .table-wrapper {
   overflow: auto;
   border-radius: 6px;
   border: 1px solid #dee2e6;
+}
+.no-book-text {
+  text-align: center;
+  padding: 1rem;
 }
 .editable-text {
   border-bottom: dashed 1px #428bca;
@@ -589,15 +603,6 @@ table {
 .btn {
   /* padding: 0rem 0.5rem; */
   font-size: 0.95rem;
-}
-.delete-button:hover {
-  border-color: #6c757d;
-}
-.delete-button {
-  background-image: linear-gradient(white, #b3b6b9);
-  border-color: #b3b6b9;
-  /* padding-top: 0.2rem;
-  padding-bottom: 0.2rem; */
 }
 .input-title {
   /* padding: 0 2rem 0 0; */
