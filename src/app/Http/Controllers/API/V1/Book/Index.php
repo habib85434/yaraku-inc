@@ -13,7 +13,6 @@ class Index extends BaseActions
      */
     public function listBook (Request $request)
     {
-        return __DIR__;
         try {
             $order = 'desc';
             $sortKey = $request->query('sort');

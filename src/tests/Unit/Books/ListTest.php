@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Books;
 
+use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
 use App\Models\Book;
 use Illuminate\Foundation\Testing\RefreshDatabase;
