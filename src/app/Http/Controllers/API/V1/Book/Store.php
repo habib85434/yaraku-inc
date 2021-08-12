@@ -16,22 +16,21 @@ class Store extends BaseActions
     {
         try {
             $validation = $this->storeValidation($request);
-            if ( $validation->fails() ) {
+            if ($validation->fails()) {
                 return responseValidationError($validation->errors());
             }
 
             $data = [];
-            $data['title']      = $request->title;
-            $data['author']     = $request->author;
-            $response['book']   = $this->repository->addToList($data);
+            $data['title'] = $request->title;
+            $data['author'] = $request->author;
+            $response['book'] = $this->repository->addToList($data);
 
             return responseCreated($response);
 
-        }  catch ( \Throwable $throwable ) {
-            Log::error($throwable->getMessage().'. Location : '.$throwable->getFile() .' at line : '
-                .$throwable->getLine());
+        } catch (\Throwable $throwable) {
+            Log::error($throwable->getMessage() . '. Location : ' . $throwable->getFile() . ' at line : '
+                . $throwable->getLine());
             return responseInternalServerError();
         }
     }
 }
-

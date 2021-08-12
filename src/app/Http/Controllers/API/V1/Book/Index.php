@@ -11,24 +11,23 @@ class Index extends BaseActions
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function listBook (Request $request)
+    public function listBook(Request $request)
     {
         try {
             $order = 'desc';
             $sortKey = $request->query('sort');
 
             empty($request->query('record')) ? $record = 0 : $record = $request->query('record');
-            if (! empty($request->query('order'))) {
+            if (!empty($request->query('order'))) {
                 $order = $request->query('order');
             }
 
-            $response['books'] = $this->repository->list(null,$record, $sortKey, $order);
+            $response['books'] = $this->repository->list(null, $record, $sortKey, $order);
             return responseSuccess($response);
         } catch (\Throwable $throwable) {
-            Log::error($throwable->getMessage().'. Location : '.$throwable->getFile() .' at line : '
-                .$throwable->getLine());
+            Log::error($throwable->getMessage() . '. Location : ' . $throwable->getFile() . ' at line : '
+                . $throwable->getLine());
             return responseInternalServerError();
         }
     }
 }
-

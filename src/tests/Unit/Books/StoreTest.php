@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Books;
 
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Tests\TestCase;
 
 class StoreTest extends TestCase
 {
@@ -81,4 +81,3 @@ class StoreTest extends TestCase
         $this->assertEquals('The author may not be greater than 50 characters.', $response['data']['author'][0]);
     }
 }
-

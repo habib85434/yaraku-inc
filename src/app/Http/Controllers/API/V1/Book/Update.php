@@ -16,7 +16,7 @@ class Update extends BaseActions
     {
         try {
             $validation = $this->updateValidation($request);
-            if ( $validation->fails() ) {
+            if ($validation->fails()) {
                 return responseValidationError($validation->errors());
             }
 
@@ -25,16 +25,15 @@ class Update extends BaseActions
                 return responseNoContent();
             }
 
-            $data['author']     = $request->author;
+            $data['author'] = $request->author;
             $response['book'] = $this->repository->update($id, $data);
 
             return responseSuccess($response);
 
-        }  catch ( \Throwable $throwable ) {
-            Log::error($throwable->getMessage().'. Location : '.$throwable->getFile() .' at line : '
-                .$throwable->getLine());
+        } catch (\Throwable $throwable) {
+            Log::error($throwable->getMessage() . '. Location : ' . $throwable->getFile() . ' at line : '
+                . $throwable->getLine());
             return responseInternalServerError();
         }
     }
 }
-

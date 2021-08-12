@@ -18,7 +18,7 @@ class BaseActions extends Controller
     /**
      * @param BookRepositoryInterface $repository
      */
-    public function __construct( BookRepository $repository )
+    public function __construct(BookRepository $repository)
     {
         $this->repository = $repository;
     }
@@ -27,11 +27,11 @@ class BaseActions extends Controller
      * @param Request $request
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    public function storeValidation ( Request $request )
+    public function storeValidation(Request $request)
     {
         return Validator::make($request->all(), [
-            'title'         => 'required|present|max:60',
-            'author'        => 'required|max:50'
+            'title' => 'required|present|max:60',
+            'author' => 'required|max:50'
         ]);
     }
 
@@ -39,10 +39,10 @@ class BaseActions extends Controller
      * @param Request $request
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    public function updateValidation ( Request $request )
+    public function updateValidation(Request $request)
     {
         return Validator::make($request->all(), [
-            'author'        => 'required|max:50'
+            'author' => 'required|max:50'
         ]);
     }
 
@@ -53,14 +53,13 @@ class BaseActions extends Controller
     public function setHeadings(Request $request)
     {
         $heading = [];
-        if (! empty( $request->query('title')) && $request->query('title') == 1) {
+        if (!empty($request->query('title')) && $request->query('title') == 1) {
             array_push($heading, 'Title');
         }
-        if (! empty( $request->query('author')) && $request->query('author') == 1) {
+        if (!empty($request->query('author')) && $request->query('author') == 1) {
             array_push($heading, 'Author');
         }
 
         return $heading;
     }
 }
-

@@ -15,7 +15,7 @@ class Search extends BaseActions
     public function searchBook(Request $request)
     {
         try {
-            $data=[];
+            $data = [];
             $title = null;
             $author = null;
             $order = 'desc';
@@ -23,7 +23,7 @@ class Search extends BaseActions
             $sortKey = $request->query('sort');
             empty($request->query('record')) ? $record = 0 : $record = $request->query('record');
 
-            if (! empty($request->query('order'))) {
+            if (!empty($request->query('order'))) {
                 $order = $request->query('order');
             }
 
@@ -40,11 +40,10 @@ class Search extends BaseActions
             $response['books'] = $this->repository->list($data, $record, $sortKey, $order);
 
             return responseSuccess($response);
-        }  catch ( \Throwable $throwable ) {
-            Log::error($throwable->getMessage().'. Location : '.$throwable->getFile() .' at line : '
-                .$throwable->getLine());
+        } catch (\Throwable $throwable) {
+            Log::error($throwable->getMessage() . '. Location : ' . $throwable->getFile() . ' at line : '
+                . $throwable->getLine());
             return responseInternalServerError();
         }
     }
 }
-

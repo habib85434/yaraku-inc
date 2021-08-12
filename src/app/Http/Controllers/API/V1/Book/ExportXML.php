@@ -19,13 +19,13 @@ class ExportXML extends BaseActions
 
             $books = $this->repository->exportData($heading);
 
-            $xmlData =  response()->xml(['book' => $books->toArray()]);
+            $xmlData = response()->xml(['book' => $books->toArray()]);
 
             return $xmlData;
 
-        }  catch ( \Throwable $throwable ) {
-            Log::error($throwable->getMessage().'. Location : '.$throwable->getFile() .' at line : '
-                .$throwable->getLine());
+        } catch (\Throwable $throwable) {
+            Log::error($throwable->getMessage() . '. Location : ' . $throwable->getFile() . ' at line : '
+                . $throwable->getLine());
             return responseInternalServerError();
         }
     }

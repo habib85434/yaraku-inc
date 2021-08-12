@@ -16,21 +16,20 @@ class ExportCSV extends BaseActions
     public function exportCSVBook(Request $request)
     {
         try {
-            $rootUrl = 'http://'.$request->getHost().':'.$request->getPort();
+            $rootUrl = 'http://' . $request->getHost() . ':' . $request->getPort();
             $heading = $this->setHeadings($request);
 
             $books = $this->repository->exportData($heading);
 
             $fileName = '_books.csv';
             $export = new ExcelExport($books, $fileName, $heading);
-            $response['link'] = $rootUrl.$export->exicute();
+            $response['link'] = $rootUrl . $export->exicute();
 
             return responseSuccess($response);
-        }  catch ( \Throwable $throwable ) {
-            Log::error($throwable->getMessage().'. Location : '.$throwable->getFile() .' at line : '
-                .$throwable->getLine());
+        } catch (\Throwable $throwable) {
+            Log::error($throwable->getMessage() . '. Location : ' . $throwable->getFile() . ' at line : '
+                . $throwable->getLine());
             return responseInternalServerError();
         }
     }
 }
-
