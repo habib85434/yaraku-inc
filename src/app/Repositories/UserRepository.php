@@ -3,7 +3,6 @@
 
 namespace App\Repositories;
 
-
 use App\Models\AccessToken;
 use App\Models\Monday\Workspace;
 use App\Models\User;
@@ -19,4 +18,3 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         $this->model = $model;
     }
 }
-

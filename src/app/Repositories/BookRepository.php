@@ -26,7 +26,7 @@ class BookRepository extends BaseRepository implements BookRepositoryInterface
      * @param string|null $sortKey
      * @return Builder[]|Collection|LengthAwarePaginator
      */
-    public function list(array $data=null, int $record, string $sortKey = null, string $order)
+    public function list(array $data = null, int $record, string $sortKey = null, string $order)
     {
         $this->record = $record;
         $books = $this->model->query();
@@ -113,4 +113,3 @@ class BookRepository extends BaseRepository implements BookRepositoryInterface
         return $books;
     }
 }
-

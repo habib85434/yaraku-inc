@@ -3,7 +3,6 @@
 
 namespace App\Repositories\Interfaces;
 
-
 interface BookRepositoryInterface extends BaseRepositoryInterface
 {
     /**
@@ -27,4 +26,3 @@ interface BookRepositoryInterface extends BaseRepositoryInterface
      */
     public function exportData(array $fields);
 }
-

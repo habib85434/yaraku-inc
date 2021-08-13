@@ -28,7 +28,7 @@ class BaseRepository implements BaseRepositoryInterface
     /**
      * @return Carbon
      */
-    function serverTime ()
+    public function serverTime()
     {
         return now();
     }
@@ -38,7 +38,7 @@ class BaseRepository implements BaseRepositoryInterface
      * @param string $order
      * @return mixed
      */
-    function all($orderBy = 'created_at', $order = 'desc')
+    public function all($orderBy = 'created_at', $order = 'desc')
     {
         return $this->model->orderBy($orderBy, $order)->get();
     }
@@ -49,7 +49,7 @@ class BaseRepository implements BaseRepositoryInterface
      * @param string $order
      * @return mixed
      */
-    function paginate($perPage = 15, $orderBy = 'created_at', $order = 'desc')
+    public function paginate($perPage = 15, $orderBy = 'created_at', $order = 'desc')
     {
         return $this->model->orderBy($orderBy, $order)->paginate($perPage);
     }
@@ -58,7 +58,7 @@ class BaseRepository implements BaseRepositoryInterface
      * @param $id
      * @return mixed
      */
-    function find($id)
+    public function find($id)
     {
         return $this->model->find($id);
     }
@@ -67,7 +67,7 @@ class BaseRepository implements BaseRepositoryInterface
      * @param array $data
      * @return mixed
      */
-    function store(array $data)
+    public function store(array $data)
     {
         return $this->model->create($data);
     }
@@ -76,7 +76,7 @@ class BaseRepository implements BaseRepositoryInterface
      * @param array $data
      * @return mixed
      */
-    function storeAll(array $data)
+    public function storeAll(array $data)
     {
         return $this->model->insert($data);
     }
@@ -86,7 +86,7 @@ class BaseRepository implements BaseRepositoryInterface
      * @param array $data
      * @return mixed
      */
-    function update($id, array $data)
+    public function update($id, array $data)
     {
         $result = $this->model->find($id);
         if (empty($result)) {
@@ -100,7 +100,7 @@ class BaseRepository implements BaseRepositoryInterface
      * @param $id
      * @return mixed
      */
-    function delete($id)
+    public function delete($id)
     {
         $result = $this->model->find($id);
         if (empty($result)) {
@@ -109,4 +109,3 @@ class BaseRepository implements BaseRepositoryInterface
         return $result->delete();
     }
 }
-

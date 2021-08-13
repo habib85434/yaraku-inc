@@ -3,7 +3,6 @@
 
 namespace App\Libs\Export;
 
-
 use App\Exports\ExportBook;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -46,10 +45,9 @@ class ExcelExport
         delete_files_from_directory(storage_path().'\framework\laravel-excel');
         $file =  Excel::download(new ExportBook($this->data, $this->heading), $this->fileName);
 
-        copy(storage_path().'/framework/laravel-excel/'.$file->getFile()->getFilename(),
-            public_path().'/csv/'.$file->getFile()->getFilename());
+        copy(storage_path().'/framework/laravel-excel/'.
+            $file->getFile()->getFilename(), public_path().'/csv/'.$file->getFile()->getFilename());
 
         return '/csv/'.$file->getFile()->getFilename();
     }
 }
-

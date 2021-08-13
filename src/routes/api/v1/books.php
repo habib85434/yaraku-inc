@@ -1,7 +1,8 @@
 <?php
 use Illuminate\Support\Facades\Route;
+
 //books
-Route::group(['prefix' => 'books'], function (){
+Route::group(['prefix' => 'books'], function () {
     Route::get('/', 'App\Http\Controllers\Api\V1\Book\Index@listBook')->name('book_list');
     Route::post('/', 'App\Http\Controllers\Api\V1\Book\Store@storeBook')->name('book_store');
     Route::put('/{id}', 'App\Http\Controllers\Api\V1\Book\Update@changeAuthor')
@@ -14,4 +15,3 @@ Route::group(['prefix' => 'books'], function (){
     Route::post('/export-csv', 'App\Http\Controllers\Api\V1\Book\ExportCSV@exportCSVBook')
         ->name('book_export_csv');
 });
-

@@ -16,8 +16,8 @@ import 'vue-loading-overlay/dist/vue-loading.css';
 //import { registerComponents } from "../src/components/Globar.js";
 import "./assets/global-style.css";
 
-// axios.defaults.baseURL = `http://127.0.0.1:8000/api/v1/`;
-axios.defaults.baseURL = `http://yaraku-inc-api.predictionla.com/api/v1/`;
+axios.defaults.baseURL = `http://127.0.0.1:8000/api/v1/`;
+// axios.defaults.baseURL = `http://yaraku-inc-api.predictionla.com/api/v1/`;
 
 
 
